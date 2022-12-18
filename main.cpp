@@ -1,16 +1,17 @@
 #include <iostream>
 #include <string>
-#include "users.h"
+#include "user.h"
+#include "chat.h"
 
 using namespace std;
 
 int main()
 {
-   Users* chat = new Users;
-   chat->register_user("login1", "password1", "username1");
-   chat->register_user("login2", "password2", "username2");
+   Chat* chat1 = new Chat;
+   chat1->register_user("login1", "password1", "username1");
+   chat1->register_user("login2", "password2", "username2");
 
-   chat->show_users();
+   chat1->show_users();
 
     return 0;
 }
