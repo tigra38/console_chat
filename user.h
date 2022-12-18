@@ -16,10 +16,10 @@ public:
     User(User& _arr) = delete;
     User& operator=(User& _list) = delete;
 
-    std::string show_login() const;
-    std::string show_username() const;
-    void set_username(std::string login);
-    void change_password(std::string login);
+    std::string get_login() const;
+    std::string get_username() const;
+    int set_username(std::string login);
+    int change_password(std::string login);
 };
 
 class Users {

@@ -13,8 +13,8 @@ User::User(string login, string password, string username) : user_login{login}, 
 User::~User() {
 }
 
-string User::show_login() const {return user_login;}
+string User::get_login() const {return user_login;}
 
-string User::show_username() const {return user_username;}
+string User::get_username() const {return user_username;}
 
 
