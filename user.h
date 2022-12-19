@@ -21,18 +21,3 @@ public:
     int set_username(std::string login);
     int change_password(std::string login);
 };
-
-class Users {
-private:
-    User** userlist;
-    size_t users_num = 0;
-
-public:
-    Users();
-    void register_user(std::string login, std::string password, std::string username);
-    void show_users();
-    virtual ~Users();
-    Users(Users& _arr) = delete;
-    Users& operator=(Users& _list) = delete;
-    size_t get_users();
-};

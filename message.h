@@ -11,6 +11,7 @@ private:
     std::string _mText;
     std::string _mID; // TEST
     int _mTime; //TEST
+
 public:
     Message(std::string From, std::string To, std::string Text);
     Message(std::string From, std::string To, std::string Text, std::string ID); //TEST
