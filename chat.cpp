@@ -27,7 +27,7 @@ void Chat::register_user(std::string login, std::string password, std::string us
 
 void Chat::show_users()
 {
-    for (size_t i = 0; i < users_num; ++i)
+    for(size_t i = 0; i < users_num ; ++i)
     {
         cout << userlist[i]->get_login() << " - " << userlist[i]->get_username() << endl;
     }
