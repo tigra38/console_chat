@@ -6,7 +6,7 @@ using namespace std;
 
 Chat::Chat()
 {
-    userlist = new Chat*;
+    userlist = new User*;
 }
 
 void Chat::register_user(std::string login, std::string password, std::string username)
@@ -29,7 +29,7 @@ void Chat::show_users()
 {
     for(size_t i = 0; i < users_num ; ++i)
     {
-        cout << userlist[i]->show_login() << " - " << userlist[i]->show_username() << endl;
+        cout << userlist[i]->get_login() << " - " << userlist[i]->get_username() << endl;
     }
 }
 

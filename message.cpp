@@ -1,6 +1,6 @@
 #include "message.h"
 
-Message::Message()
+Message::Message(std::string From, std::string To, std::string Text)
 {
 
 }
