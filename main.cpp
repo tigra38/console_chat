@@ -1,8 +1,13 @@
-#include <iostream>
+﻿#include <iostream>
 #include <string>
 #include "user.h"
 #include "chat.h"
-
+/* 20/12/2022 
+* Меню работает, но только когда функция initialMenu() расположена в User.h
+* перенести в Chat.h не получается.
+* Сейчас работает только в части регистрации/добавления нового пользователя. 
+*  
+*/
 
 using namespace std;
 
