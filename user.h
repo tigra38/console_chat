@@ -17,9 +17,9 @@ public:
     User() = default;
     User(std::string login, std::string password) 
         : _login(login), _password(password) {}
-    //virtual ~User() {}
+    virtual ~User() {}
     //User(User& _arr) = delete;
-    //User& operator=(User& _list) = delete;
+    User& operator=(User& _list) = delete;
     
     void set_login(const std::string login) {}
     void set_password(std::string password) {}
@@ -57,16 +57,11 @@ public:
             case '1':
                 std::cout << "sign-up procedure called" << std::endl;
                 std::cout << "Login Password" << std::endl;
-                std::cin >> lgn >> pwd;
-                _users.emplace_back(lgn, pwd);
-                //_users.addUser();//doesn't work, even within User class
-                //*******************************to add: taken login check 
+                this->addUser();
+                //*******************************to add: check for taken login 
                 //*******************************to add: password procedure
                 std::cout << "user added" << std::endl;//TEST. to be removed
-                //_users.showUsers();//TEST. to be removed //doesn't work, even within User class
-                for (auto& user : _users)
-                    std::cout << user.get_login() << " "
-                    << user.get_password() << std::endl;
+                this->showUsers();//TEST. to be removed
                 break;
 
             case '2':
