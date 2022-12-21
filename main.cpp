@@ -12,6 +12,6 @@ int main()
    chat1->register_user("login2", "password2", "username2");
 
    chat1->show_users();
-
+   int test;
     return 0;
 }
