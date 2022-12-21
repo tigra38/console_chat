@@ -19,7 +19,7 @@ public:
         : _login(login), _password(password) {}
     virtual ~User() {}
     //User(User& _arr) = delete;
-    User& operator=(User& _list) = delete;
+    //User& operator=(User& _list) = delete;
     
     void set_login(const std::string login) {}
     void set_password(std::string password) {}
@@ -31,7 +31,6 @@ public:
             std::cout << user.get_login() << " "
             << user.get_password() << std::endl;
     }
-    
     void addUser()
     {
         std::string lgn;
@@ -40,8 +39,7 @@ public:
         std::cin >> lgn >> pwd;
         _users.emplace_back(lgn, pwd);
     }
-    
-    
+      
     void initialMenu()
     {
         while (true)
