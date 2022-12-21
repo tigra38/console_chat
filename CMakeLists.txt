@@ -17,9 +17,7 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core REQUIRED)
 add_executable(Chat
   main.cpp
   User.h
-  User.cpp
   Message.h
-  Message.cpp
   Chat.h
   Chat.cpp
 )
