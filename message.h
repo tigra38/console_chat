@@ -14,6 +14,7 @@ private:
     //std::string _mID; // TEST
     //int _mTime; //TEST*/
 
+
 public:
     ~Message() {}
     Message(const std::string& from, const std::string& to, const std::string& text) 

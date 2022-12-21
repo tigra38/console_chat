@@ -4,12 +4,15 @@
 #include <string>
 #include <memory> //need to use smart pointers!
 #include "user.h"
+#include "message.h"
 
 class Chat {
 private:
+
     //std::vector<User> _users;
     //User userlist;
     //size_t users_num = 0;
+
 
 public:
     /*
@@ -60,7 +63,10 @@ public:
       */
     /*
     Chat();
+    void login_user (std::string login, std::string password);
+    void logout();
     void register_user(std::string login, std::string password, std::string username);
+    void create_message(std::string From, std::string To, std::string Text);
     void show_users();
     virtual ~Chat();
     Chat(Chat& _arr) = delete;
