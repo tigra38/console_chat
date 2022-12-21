@@ -13,5 +13,5 @@ int main()
 
    chat1->show_users();
 
-    return 0;
+    return 1;
 }
