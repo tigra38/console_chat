@@ -6,7 +6,6 @@
 class Message
 {
 private:
-    //уникальные имена переменных для всей программы, предлагается упростить
     const std::string _from;
     const std::string _to;
     const std::string _text;
