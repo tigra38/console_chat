@@ -1,3 +1,4 @@
+/*
 #include "chat.h"
 #include "user.h"
 #include "message.h"
@@ -76,3 +77,4 @@ Chat::~Chat()
 }
 
 size_t Chat::get_users() {return users_num;}
+*/
