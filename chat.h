@@ -13,6 +13,7 @@ private:
 public:
     Chat();
     void initialMenu();
+    void userMenu();
     void login (std::string login, std::string password);
     void logout();
     void create_message(std::string From, std::string To, std::string Text);

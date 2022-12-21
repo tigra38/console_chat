@@ -52,6 +52,36 @@ void Chat::showUsers()
 
 void Chat::create_message(std::string From, std::string To, std::string Text) {}
 
+void Chat::userMenu()
+{
+    while (true)
+    {
+        char user_choice;
+        std::cout << "************** User Menu: Choose an option: ***************" << std::endl;
+        std::cout << " 1 - Read messages | 2 - Send a message | 3 - Change user / Restart | 0 - Exit" << endl;
+        std::cin >> user_choice;
+        switch (user_choice)
+        {
+        case '1':
+            readMessages();
+            break;
+        case '2':
+            showUsers();
+            break;
+        case '3':
+            initialMenu();
+            break;
+        case '0':
+            std::cout << "Exit" << std::endl;
+            //нужно создать процедуру типа Чат старт = 1 / Чат закрыт = 0 и вставить её сюда
+            break;
+        default:
+            std::cout << "Wrong input. Exit" << std::endl;
+            //нужно создать процедуру типа Чат старт = 1 / Чат закрыт = 0 и вставить её сюда
+        }
+    }
+}
+
 void Chat::initialMenu()
 {
     while (true)
@@ -74,12 +104,12 @@ void Chat::initialMenu()
 
         case '0':
             std::cout << "Exit" << std:: endl;
-            //return 0;
+            //нужно создать функцию типа Чат старт = 1 / Чат закрыт = 0 и вставить её сюда
             break;
 
         default:
             std::cout << "Wrong input. Exit" << std::endl;
-            //return 0;
+            //нужно создать функцию типа Чат старт = 1 / Чат закрыт = 0 и вставить её сюда
             break;
         }
     }
