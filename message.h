@@ -19,10 +19,7 @@ public:
     ~Message() {}
     Message(const std::string& from, const std::string& to, const std::string& text) 
         : _from(from), _to(to), _text(text) {}
-/*
-    Message(std::string From, std::string To, std::string Text, std::string ID); //TEST
-    Message(std::string From, std::string To, std::string Text, int Time); //TEST
-*/
+
     const std::string getFrom() { return _from; }
     const std::string getTo() { return _to; }
     const std::string getText() { return _text; }

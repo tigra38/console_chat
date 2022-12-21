@@ -1,4 +1,3 @@
-/*
 #include "chat.h"
 #include "user.h"
 #include "message.h"
@@ -8,73 +7,87 @@ using namespace std;
 
 Chat::Chat()
 {
+
 }
 
-void Chat::login_user(std::string login, std::string password)
-{
-    //if () //проверка существования пользователя и поиск его номера в массиве userlist
-    //if () //проверка пароля для логина
-    current_user = userlist[0]; //допустим, номер 0
-}
+void Chat::login(std::string login, std::string password){}
 
-void Chat::logout()
-{
-    if (current_user != nullptr)
-    delete current_user;
-}
+void Chat::logout() {}
 
-void Chat::register_user(std::string login, std::string password, std::string username)
+void Chat::addUser()
 {
-    if (users_num > 0)
+    string login, password;
+    cout << "Sign-up. Enter login:" << endl;
+    cin >> login;
+    bool error = true;
+    if (login == "") cout << "Вы не ввели данные!" << endl;
+    else if (login == "all") cout << "Пользователь all запрещён для использования." << endl;
+    else
     {
-        User** temp_list = new User*[users_num+1];
-        for (size_t i = 0; i < users_num; ++i)
+        error = false;
+        for (auto& user : _users)
         {
-            temp_list[i] = userlist[i];
+            if (user.get_login() == login)
+            {
+                cout << "Пользователь с таким именем уже зарегистрирован";
+                error = true;
+                break;
+            }
         }
-        userlist = temp_list;
     }
-    userlist[users_num] = new User(login, password, username);
-    users_num++;
+    if (!error)
+    {
+    cout << "Enter password:" << endl;
+    cin >> password;
+    _users.emplace_back(login, password);
+    std::cout << "User added." << std::endl;
+    }
 }
 
-void Chat::create_message(std::string From, std::string To, std::string Text)
+void Chat::showUsers()
 {
-    if (message_num > 0)
+    for (auto& user : _users)
+        std::cout << user.get_login() << std::endl;
+}
+
+void Chat::create_message(std::string From, std::string To, std::string Text) {}
+
+void Chat::initialMenu()
+{
+    while (true)
     {
-        Message** new_message = new Message*[message_num+1];
-        for (size_t i = 0; i < message_num; ++i)
+        char user_choise;
+        std::cout << "*********** Choose an option: ***************" << std::endl;
+        std::cout << "   1 - new user sign-up | 2 - sign-in | 0 - exit" << std::endl;
+        std::cin >> user_choise;
+        std::string lgn;
+        std::string pwd;
+        switch (user_choise)
         {
-            new_message[i] = messagelist[i];
-        }
-        messagelist = new_message;
-    }
-    messagelist[message_num] = new Message(From, To, Text);
-    message_num++;
-}
+        case '1':
+            addUser();
+            break;
+        case '2':
+            std::cout << "Existing user sign-in procedure" << std::endl;
+            //return 0;
+            break;
 
-void Chat::show_users()
-{
-    for(size_t i = 0; i < users_num ; ++i)
-    {
-        cout << userlist[i]->get_login() << " - " << userlist[i]->get_username() << endl;
+        case '0':
+            std::cout << "Exit" << std:: endl;
+            //return 0;
+            break;
+
+        default:
+            std::cout << "Wrong input. Exit" << std::endl;
+            //return 0;
+            break;
+        }
     }
 }
 
 Chat::~Chat()
 {
-    for(size_t i = 0; i < users_num ; ++i)
-    {
-        delete[] userlist[i];
-    }
-    delete userlist;
 
-    for(size_t i = 0; i < message_num ; ++i)
-    {
-        delete[] messagelist[i];
-    }
-    delete messagelist;
 }
 
-size_t Chat::get_users() {return users_num;}
-*/
+
