@@ -17,40 +17,38 @@ void Chat::setCurrentuser(User* user)
 
 void Chat::getCurrentuser()
 {
-    cout << currentUser->get_login() << endl;
+    if (currentUser != nullptr) {
+        cout << currentUser->get_login() << endl;
+    }
+    else cout << "Nobody logged in" << endl;
 }
 
-void Chat::login(){
+void Chat::login() {
     string login, password;
     cout << "Sign-in. Enter login:" << endl;
     cin >> login;
     bool success = false;
     User* temp;
-    for (auto& user : _users)
-    {
-        if (user.get_login() == login)
-        {
+    for (auto& user : _users) {
+        if (user.get_login() == login) {
             success = true;
             temp = &user;
             break;
         }
     }
-    if (success)
-    {
+    if (success) {
         cout << "Enter password:" << endl;
         cin >> password;
-        if (temp->pwdVerify(password))
-        {
+        if (temp->pwdVerify(password)) {
             cout << "Welcome, " << temp->get_login() << "!" << endl;
             this->setCurrentuser(temp);
+            this->userMenu();
         }
-        else
-        {
+        else {
             cout << "Password incorrect!" << endl;
         }
     }
-    else
-    {
+    else {
         cout << "No such user!" << endl;
     }
 }
@@ -62,7 +60,7 @@ void Chat::logout() {
 void Chat::addUser()
 {
     string login, password;
-    cout << "Sign-up. Enter login:" << endl;
+    cout << "Register new user. Enter login:" << endl;
     cin >> login;
     bool error = true;
     if (login == "") cout << "Вы не ввели данные!" << endl;
@@ -94,6 +92,7 @@ void Chat::showUsersByLogin()
     for (auto& user : _users)
         std::cout << user.get_login() << std::endl;
 }
+
 void Chat::showMessages()
 {
     for (auto& text : _messages)
@@ -149,36 +148,34 @@ void Chat::userMenu()
 
 void Chat::initialMenu()
 {
-    while (true)
+    bool chat_enable = true;
+    while (chat_enable)
     {
         char user_choise;
         std::cout << "*********** Initial Menu: Choose an option: ***************" << std::endl;
         std::cout << "   1 - new user sign-up | 2 - sign-in | 0 - exit" << std::endl;
         std::cin >> user_choise;
-        std::string lgn;
-        std::string pwd;
         switch (user_choise)
         {
         case '1':
             addUser();
             break;
         case '2':
-            std::cout << "Existing user sign-in procedure" << std::endl;
             login();
-            //this->getCurrentuser(); //for testing login
             break;
 
         case '0':
             std::cout << "Exit" << std:: endl;
-            // ? нужно создать функцию типа Чат старт = 1 / Чат закрыт = 0 и вставить её сюда
+            chat_enable = false;
             break;
 
         default:
             std::cout << "Wrong input. Exit" << std::endl;
-            // ? нужно создать функцию типа Чат старт = 1 / Чат закрыт = 0 и вставить её сюда
+            chat_enable = false;
             break;
         }
     }
+    cout << "Chat session terminated! See you again!" << endl;
 }
 
 Chat::~Chat()
