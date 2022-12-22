@@ -103,12 +103,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\console_chat\chat.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="chat.h" />
     <ClInclude Include="message.h" />
     <ClInclude Include="user.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\console_chat\CMakeLists.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
