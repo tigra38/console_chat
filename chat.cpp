@@ -94,13 +94,16 @@ void Chat::addUser()
 void Chat::showUsersByLogin()
 {
     for (auto& user : _users)
+        if(user.get_login() != currentUser->get_login())
         std::cout << user.get_login() << std::endl;
 }
 void Chat::showMessages()
 {
     for (auto& text : _messages)
         if (text.getTo() == currentUser->get_login())
-        std::cout << text.getText() << std::endl;
+            std::cout << "Message *" << text.getText() 
+            << "* from user *" << text.getFrom() << "*"
+            << std::endl;
 }
 
 void Chat::createMessage() 
@@ -123,8 +126,8 @@ void Chat::userMenu()
     while (true)
     {
         char user_choice;
-        std::cout << "************** User Menu: Choose an option: ***************" << std::endl;
-        std::cout << " 1 - Read messages | 2 - Send a message | 3 - Change user / Restart | 0 - Exit" << endl;
+        std::cout << "\033[93m" << "************** User Menu: Choose an option: ***************" << std::endl;
+        std::cout << "\033[93m" << " 1 - Read messages | 2 - Send a message | 3 - Change user / Restart | 0 - Exit" << endl;
         std::cin >> user_choice;
         switch (user_choice)
         {
@@ -134,7 +137,7 @@ void Chat::userMenu()
             (void)getchar();
             break;
         case '2':
-            createMessage(/*"test_login", "test_pwd", "test_msg"*/);
+            createMessage();
             break;
         case '3':
             initialMenu();
