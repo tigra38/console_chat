@@ -52,13 +52,13 @@ void Chat::showUsersByLogin()
 void Chat::showMessages()
 {
     for (auto& text : _messages)
-        std::cout << text.getText << std::endl;
+        std::cout << text.getText() << std::endl;
 }
 
 void Chat::createMessage(std::string From, std::string To, std::string Text) 
 {
     std::cout << "Users online:" << std::endl;
-    std::cout << showUsersByLogin() << endl;
+    showUsersByLogin();
     std::cout << " Enter addressee login: " << endl;
     std::cin >> To;
     //From = //нужно создать currentUser(login) как результат sign-in/sign-up
@@ -82,11 +82,11 @@ void Chat::userMenu()
         case '1':
             showMessages();
             std::cout << "Hit Enter to continue ... " << std::endl;
-            getchar();
+            (void)getchar();
             // ? returning to level up 
             break;
         case '2':
-            createMessage();
+            createMessage("test_login", "test_pwd", "test_msg");
             break;
         case '3':
             initialMenu();
