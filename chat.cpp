@@ -99,13 +99,14 @@ void Chat::showMessages()
 {
     for (auto& text : _messages)
         if (text.getTo() == currentUser->get_login())
-<<<<<<< HEAD
             std::cout << "Message *" << text.getText() 
             << "* from user *" << text.getFrom() << "*"
             << std::endl;
-=======
-        std::cout << text.getText() << std::endl;
->>>>>>> d27004d (Add: Chat::showMessages() - messages filtering by user's login)
+//        std::cout << text.getText() << std::endl;
+            std::cout << "Message *" << text.getText() 
+            << "* from user *" << text.getFrom() << "*"
+            << std::endl;
+>>>>>>> 0780b61 (Add current user filter to Chat::showUsersByLogin())
 }
 
 void Chat::createMessage() 
