@@ -15,6 +15,7 @@ void Chat::setCurrentuser(User* user)
     currentUser = user;
 }
 
+
 void Chat::getCurrentuser()
 {
     cout << currentUser->get_login() << endl;
@@ -43,6 +44,7 @@ void Chat::login(){
         {
             cout << "Welcome, " << temp->get_login() << "!" << endl;
             this->setCurrentuser(temp);
+            userMenu();
         }
         else
         {
@@ -100,17 +102,18 @@ void Chat::showMessages()
         std::cout << text.getText() << std::endl;
 }
 
-void Chat::createMessage(std::string From, std::string To, std::string Text) 
+void Chat::createMessage() 
 {
+    std::string from, to, text;
     std::cout << "Users online:" << std::endl;
     showUsersByLogin();
     std::cout << " Enter addressee login: " << endl;
-    std::cin >> To;
-    //From = //нужно создать currentUser(login) как результат sign-in/sign-up
+    std::cin >> to;
+    from = currentUser->get_login();
     std::cout << "Write your message, press enter to send: " << endl;
-    std::cin >> Text;
-    _messages.emplace_back(From, To, Text);
-    std::cout << "Message sent." << endl;
+    std::cin >> text;
+    _messages.emplace_back(from, to, text);
+    std::cout << "Message *" << text << "* from user *" << from << "* to user *" << to << "* sent. " << std::endl;
     userMenu();
 }
 
@@ -128,10 +131,9 @@ void Chat::userMenu()
             showMessages();
             std::cout << "Hit Enter to continue ... " << std::endl;
             (void)getchar();
-            // ? returning to level up 
             break;
         case '2':
-            createMessage("test_login", "test_pwd", "test_msg");
+            createMessage(/*"test_login", "test_pwd", "test_msg"*/);
             break;
         case '3':
             initialMenu();
