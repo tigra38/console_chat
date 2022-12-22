@@ -93,24 +93,42 @@ void Chat::showUsersByLogin()
         std::cout << user.get_login() << std::endl;
 }
 
-void Chat::showMessages()
-{
-    for (auto& text : _messages)
-        std::cout << text.getText() << std::endl;
-}
-
 void Chat::createMessage(std::string From, std::string To, std::string Text) 
 {
     std::cout << "Users online:" << std::endl;
     showUsersByLogin();
     std::cout << " Enter addressee login: " << endl;
     std::cin >> To;
-    //From = //нужно создать currentUser(login) как результат sign-in/sign-up
+
+/*   for (auto& user : _users)
+        if (To != ???)                                                                                  //Как реализовать перебор значений users
+        {
+            std::cout << "There is no such user.\nSelect user:" << endl;
+            showUsersByLogin();
+        }
+*/
+
+    if (currentUser->get_login() == To)                                                                 //Не отправлять сообщения себе
+    {
+        std::cout << "You can't send a message to yourself.\nSelect another user:" << endl;
+        showUsersByLogin();
+    }
+    From = currentUser->get_login();
+
     std::cout << "Write your message, press enter to send: " << endl;
     std::cin >> Text;
     _messages.emplace_back(From, To, Text);
     std::cout << "Message sent." << endl;
     userMenu();
+}
+
+void Chat::showMessages()
+{
+    for (auto& text : _messages)
+        if (currentUser->get_login() != text.getFrom())
+        {
+            std::cout << "<" << text.getFrom() << ">: " << text.getText() << std::endl;
+        }
 }
 
 void Chat::userMenu()
@@ -130,7 +148,7 @@ void Chat::userMenu()
             // ? returning to level up 
             break;
         case '2':
-            createMessage("test_login", "test_pwd", "test_msg");
+            createMessage("test_from", "test_to", "test_msg");
             break;
         case '3':
             initialMenu();

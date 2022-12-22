@@ -15,7 +15,7 @@ public:
     Chat();
     void initialMenu();
     void userMenu();
-    void login ();
+    void login();
     void logout();
     void createMessage(std::string From, std::string To, std::string Text);
     void showUsersByLogin();

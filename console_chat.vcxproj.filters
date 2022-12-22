@@ -18,7 +18,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\console_chat\chat.cpp">
+    <ClCompile Include="chat.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -34,6 +34,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\..\console_chat\CMakeLists.txt" />
+    <Text Include="CMakeLists.txt" />
   </ItemGroup>
 </Project>
