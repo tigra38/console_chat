@@ -99,6 +99,7 @@ void Chat::showUsersByLogin()
 void Chat::showMessages()
 {
     for (auto& text : _messages)
+        if (text.getTo() == currentUser->get_login())
         std::cout << text.getText() << std::endl;
 }
 
