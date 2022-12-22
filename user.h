@@ -7,15 +7,12 @@
 class User 
 {
 private:
-    //для простоты предлагаю сократить переменные до как указано ниже, без префикса user. 
-    //Эти переменные уникальны, нет необходимости в префиксах
-    const std::string _login;//АЗ отмечал важность сохранения логина как константы от дальнейш изменений
+    const std::string _login;
     std::string _password;
-   // std::vector<User> _users;//declared here for tests. potential move to chat.h
     
 public:
     User() = default;
-    User(std::string login, std::string password) 
+    User(std::string login, std::string password)
         : _login(login), _password(password) {}
     virtual ~User() {}
     //User(User& _arr) = delete;
@@ -24,5 +21,10 @@ public:
     void set_login(const std::string login) {}
     void set_password(std::string password) {}
     const std::string get_login() { return _login; }
-    //const std::string get_password() { return _password; }
+    bool pwdVerify(std::string password) {
+        if (password == _password)
+            return true;
+        else return false;
+    }
+    //const string get_password() { return _password; } //unsafe function!
 };

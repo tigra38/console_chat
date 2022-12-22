@@ -10,9 +10,54 @@ Chat::Chat()
 
 }
 
-void Chat::login(std::string login, std::string password){}
+void Chat::setCurrentuser(User* user)
+{
+    currentUser = user;
+}
 
-void Chat::logout() {}
+void Chat::getCurrentuser()
+{
+    cout << currentUser->get_login() << endl;
+}
+
+void Chat::login(){
+    string login, password;
+    cout << "Sign-in. Enter login:" << endl;
+    cin >> login;
+    bool success = false;
+    User* temp;
+    for (auto& user : _users)
+    {
+        if (user.get_login() == login)
+        {
+            success = true;
+            temp = &user;
+            break;
+        }
+    }
+    if (success)
+    {
+        cout << "Enter password:" << endl;
+        cin >> password;
+        if (temp->pwdVerify(password))
+        {
+            cout << "Welcome, " << temp->get_login() << "!" << endl;
+            this->setCurrentuser(temp);
+        }
+        else
+        {
+            cout << "Password incorrect!" << endl;
+        }
+    }
+    else
+    {
+        cout << "No such user!" << endl;
+    }
+}
+
+void Chat::logout() {
+    this->setCurrentuser(nullptr);
+}
 
 void Chat::addUser()
 {
@@ -119,7 +164,8 @@ void Chat::initialMenu()
             break;
         case '2':
             std::cout << "Existing user sign-in procedure" << std::endl;
-            //return 0;
+            login();
+            //this->getCurrentuser(); //for testing login
             break;
 
         case '0':
