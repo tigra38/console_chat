@@ -103,17 +103,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\console_chat\chat.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="chat.h" />
     <ClInclude Include="message.h" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="user.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="console_chat.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
