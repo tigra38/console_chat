@@ -44,20 +44,70 @@ void Chat::addUser()
     }
 }
 
-void Chat::showUsers()
+void Chat::showUsersByLogin()
 {
     for (auto& user : _users)
         std::cout << user.get_login() << std::endl;
 }
+void Chat::showMessages()
+{
+    for (auto& text : _messages)
+        std::cout << text.getText << std::endl;
+}
 
-void Chat::create_message(std::string From, std::string To, std::string Text) {}
+void Chat::createMessage(std::string From, std::string To, std::string Text) 
+{
+    std::cout << "Users online:" << std::endl;
+    std::cout << showUsersByLogin() << endl;
+    std::cout << " Enter addressee login: " << endl;
+    std::cin >> To;
+    //From = //нужно создать currentUser(login) как результат sign-in/sign-up
+    std::cout << "Write your message, press enter to send: " << endl;
+    std::cin >> Text;
+    _messages.emplace_back(From, To, Text);
+    std::cout << "Message sent." << endl;
+    userMenu();
+}
+
+void Chat::userMenu()
+{
+    while (true)
+    {
+        char user_choice;
+        std::cout << "************** User Menu: Choose an option: ***************" << std::endl;
+        std::cout << " 1 - Read messages | 2 - Send a message | 3 - Change user / Restart | 0 - Exit" << endl;
+        std::cin >> user_choice;
+        switch (user_choice)
+        {
+        case '1':
+            showMessages();
+            std::cout << "Hit Enter to continue ... " << std::endl;
+            getchar();
+            // ? returning to level up 
+            break;
+        case '2':
+            createMessage();
+            break;
+        case '3':
+            initialMenu();
+            break;
+        case '0':
+            std::cout << "Exit" << std::endl;
+            // ? нужно создать процедуру типа Чат старт = 1 / Чат закрыт = 0 и вставить её сюда
+            break;
+        default:
+            std::cout << "Wrong input. Exit" << std::endl;
+            // ? нужно создать процедуру типа Чат старт = 1 / Чат закрыт = 0 и вставить её сюда
+        }
+    }
+}
 
 void Chat::initialMenu()
 {
     while (true)
     {
         char user_choise;
-        std::cout << "*********** Choose an option: ***************" << std::endl;
+        std::cout << "*********** Initial Menu: Choose an option: ***************" << std::endl;
         std::cout << "   1 - new user sign-up | 2 - sign-in | 0 - exit" << std::endl;
         std::cin >> user_choise;
         std::string lgn;
@@ -74,12 +124,12 @@ void Chat::initialMenu()
 
         case '0':
             std::cout << "Exit" << std:: endl;
-            //return 0;
+            // ? нужно создать функцию типа Чат старт = 1 / Чат закрыт = 0 и вставить её сюда
             break;
 
         default:
             std::cout << "Wrong input. Exit" << std::endl;
-            //return 0;
+            // ? нужно создать функцию типа Чат старт = 1 / Чат закрыт = 0 и вставить её сюда
             break;
         }
     }
