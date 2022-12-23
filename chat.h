@@ -17,7 +17,7 @@ public:
     void userMenu();
     void login();
     void logout();
-    void createMessage(std::string From, std::string To, std::string Text);
+    void createMessage(); 
     void showUsersByLogin();
     virtual ~Chat();
     Chat(Chat& _arr) = delete;
