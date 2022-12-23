@@ -2,8 +2,11 @@
 #include "user.h"
 #include "message.h"
 #include <string>
-
+#include <chrono>
+#include <ctime>
+ 
 using namespace std;
+using std::chrono::system_clock;
 
 Chat::Chat()
 {
@@ -98,19 +101,21 @@ void Chat::showUsersByLogin()
         std::cout << user.get_login() << std::endl;
 }
 
-
-void Chat::createMessage() 
+void Chat::createMessage()
 {
     std::string from, to, text;
+    std::time_t timestamp;
+    //char ts;
+    system_clock::time_point value_t = system_clock::now();
+    timestamp = system_clock::to_time_t(value_t);
     std::cout << "Users online:" << std::endl;
     showUsersByLogin();
     std::cout << " Enter addressee login: " << endl;
     std::cin >> to;
     from = currentUser->get_login();
-
     std::cout << "Write your message, press enter to send: " << endl;
     std::cin >> text;
-    _messages.emplace_back(from, to, text);
+    _messages.emplace_back(from, to, text, timestamp);
     std::cout << "Message *" << text << "* from user *" << from << "* to user *" << to << "* sent. " << std::endl;
     userMenu();
 }
@@ -118,9 +123,12 @@ void Chat::createMessage()
 void Chat::showMessages()
 {
     for (auto& text : _messages)
-        if (currentUser->get_login() != text.getFrom())
+        if (currentUser->get_login() != text.getFrom() )
         {
-            std::cout << "<" << text.getFrom() << ">: " << text.getText() << std::endl;
+            auto x = text.getTime();
+            auto y = ctime(&x);
+            std::cout << "Message from <" << text.getFrom() << ">: " << text.getText() 
+               << "received at " << y << std::endl;
         }
 }
 
@@ -130,7 +138,7 @@ void Chat::userMenu()
     {
         char user_choice;
         std::cout << "\033[93m" << "************** User Menu: Choose an option: ***************" << std::endl;
-        std::cout << "\033[93m" << " 1 - Read messages | 2 - Send a message | 3 - Change user / Restart | 0 - Exit" << endl;
+        std::cout << "\033[93m" << " 1 - Read messages | 2 - Send a message | 3 - Logout / Return to start" << endl;
         std::cin >> user_choice;
         std::cout << endl;
         switch (user_choice)
@@ -145,16 +153,11 @@ void Chat::userMenu()
             createMessage();
             break;
         case '3':
-            //initialMenu(); //данная строчка вызывает рекурсию и не даёт выйти из программы
-            logout();
-            break;
-        case '0': //только logout, выйти из чата пока не получается
-            std::cout << "Exit" << std::endl;
             logout();
             break;
         default:
             logout();
-            std::cout << "Wrong input. Exit" << std::endl;
+            std::cout << "Wrong input. Return to start" << std::endl;
         }
     }
 }
@@ -182,7 +185,6 @@ void Chat::initialMenu()
             std::cout << "Exit" << std:: endl;
             chat_enable = false;
             break;
-
         default:
             std::cout << "Wrong input. Exit" << std::endl;
             chat_enable = false;
