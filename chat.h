@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include <string>
-#include <memory> //need to use smart pointers!
+#include <memory> 
 #include "user.h"
 #include "message.h"
 
