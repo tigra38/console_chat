@@ -26,9 +26,9 @@ Console chat:
 + + vector<Message> _messages - массив объектов класса Message
 + + vector<User> _users - массив объектов класса User
 + + void Chat::initialMenu() - основное меню
-+ + void Chat::addUser() - добавление нового пользователя
-+ + void Chat::login() - авторизация пользователя
++ + + void Chat::addUser() - добавление нового пользователя
++ + + void Chat::login() - авторизация пользователя
 + + void Chat::userMenu() - меню пользователя
-+ + void Chat::createMessage() - создать сообщение
-+ + void Chat::showMessages() - посмотреть сообщения
-+ + void Chat::logout() - выход из пользователя и возврат в основное меню
++ + + void Chat::createMessage() - создать сообщение
++ + + void Chat::showMessages() - посмотреть сообщения
++ + + void Chat::logout() - выход из пользователя и возврат в основное меню
