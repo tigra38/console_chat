@@ -9,7 +9,7 @@ int main()
 {
     Chat chat1;
     chat1.initialMenu();
-    
+    //chat1.userMenu();
 
     return 0;
 }

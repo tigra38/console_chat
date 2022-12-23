@@ -15,6 +15,7 @@ void Chat::setCurrentuser(User* user)
     currentUser = user;
 }
 
+
 void Chat::getCurrentuser()
 {
     if (currentUser != nullptr) {
@@ -90,26 +91,31 @@ void Chat::addUser()
 void Chat::showUsersByLogin()
 {
     for (auto& user : _users)
+        if(user.get_login() != currentUser->get_login())
         std::cout << user.get_login() << std::endl;
 }
 
 void Chat::showMessages()
 {
     for (auto& text : _messages)
-        std::cout << text.getText() << std::endl;
+        if (text.getTo() == currentUser->get_login())
+            std::cout << "Message *" << text.getText() 
+            << "* from user *" << text.getFrom() << "*"
+            << std::endl;
 }
 
-void Chat::createMessage(std::string From, std::string To, std::string Text) 
+void Chat::createMessage() 
 {
+    std::string from, to, text;
     std::cout << "Users online:" << std::endl;
     showUsersByLogin();
     std::cout << " Enter addressee login: " << endl;
-    std::cin >> To;
-    //From = //нужно создать currentUser(login) как результат sign-in/sign-up
+    std::cin >> to;
+    from = currentUser->get_login();
     std::cout << "Write your message, press enter to send: " << endl;
-    std::cin >> Text;
-    _messages.emplace_back(From, To, Text);
-    std::cout << "Message sent." << endl;
+    std::cin >> text;
+    _messages.emplace_back(from, to, text);
+    std::cout << "Message *" << text << "* from user *" << from << "* to user *" << to << "* sent. " << std::endl;
     userMenu();
 }
 
@@ -118,8 +124,8 @@ void Chat::userMenu()
     while (true)
     {
         char user_choice;
-        std::cout << "************** User Menu: Choose an option: ***************" << std::endl;
-        std::cout << " 1 - Read messages | 2 - Send a message | 3 - Change user / Restart | 0 - Exit" << endl;
+        std::cout << "\033[93m" << "************** User Menu: Choose an option: ***************" << std::endl;
+        std::cout << "\033[93m" << " 1 - Read messages | 2 - Send a message | 3 - Change user / Restart | 0 - Exit" << endl;
         std::cin >> user_choice;
         switch (user_choice)
         {
@@ -127,10 +133,9 @@ void Chat::userMenu()
             showMessages();
             std::cout << "Hit Enter to continue ... " << std::endl;
             (void)getchar();
-            // ? returning to level up 
             break;
         case '2':
-            createMessage("test_login", "test_pwd", "test_msg");
+            createMessage();
             break;
         case '3':
             initialMenu();
