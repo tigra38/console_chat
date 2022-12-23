@@ -4,20 +4,25 @@
 #include "chat.h"
 #include <chrono>
 #include <ctime>
+#include <exception>
 
 using namespace std;
-using std::chrono::system_clock;
+using chrono::system_clock;
 
 int main()
 {
    system_clock::time_point today = system_clock::now();
-   std::time_t tt;
+   time_t tt;
    tt = system_clock::to_time_t(today);
-   std::cout << "Today is: " << ctime(&tt);
+   cout << "Today is: " << ctime(&tt);
    
     Chat chat1;
-    chat1.initialMenu();
-    
+    try {
+        chat1.initialMenu();
+    }
+    catch (exception& e) {
+        cout << e.what();
+    }
 
     return 0;
 }

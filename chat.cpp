@@ -6,7 +6,7 @@
 #include <ctime>
  
 using namespace std;
-using std::chrono::system_clock;
+using chrono::system_clock;
 
 Chat::Chat()
 {
@@ -47,7 +47,7 @@ void Chat::login() {
             system("cls");
             cout << "Welcome, " << temp->get_login() << "!" << endl;
             this->setCurrentuser(temp);
-            std::cout << endl;
+            cout << endl;
             this->userMenu();
         }
         else {
@@ -90,7 +90,7 @@ void Chat::addUser()
     cout << "Enter password:" << endl;
     cin >> password;
     _users.emplace_back(login, password);
-    std::cout << "User added." << std::endl;
+    cout << "User added." << endl;
     }
 }
 
@@ -98,25 +98,25 @@ void Chat::showUsersByLogin()
 {
     for (auto& user : _users)
         if(user.get_login() != currentUser->get_login())
-        std::cout << user.get_login() << std::endl;
+        cout << user.get_login() << endl;
 }
 
 void Chat::createMessage()
 {
-    std::string from, to, text;
-    std::time_t timestamp;
+    string from, to, text;
+    time_t timestamp;
     //char ts;
     system_clock::time_point value_t = system_clock::now();
     timestamp = system_clock::to_time_t(value_t);
-    std::cout << "Users online:" << std::endl;
+    cout << "Users online:" << endl;
     showUsersByLogin();
-    std::cout << " Enter addressee login: " << endl;
-    std::cin >> to;
+    cout << " Enter addressee login: " << endl;
+    cin >> to;
     from = currentUser->get_login();
-    std::cout << "Write your message, press enter to send: " << endl;
-    std::cin >> text;
+    cout << "Write your message, press enter to send: " << endl;
+    cin >> text;
     _messages.emplace_back(from, to, text, timestamp);
-    std::cout << "Message *" << text << "* from user *" << from << "* to user *" << to << "* sent. " << std::endl;
+    cout << "Message *" << text << "* from user *" << from << "* to user *" << to << "* sent. " << endl;
     userMenu();
 }
 
@@ -127,8 +127,8 @@ void Chat::showMessages()
         {
             auto x = text.getTime();
             auto y = ctime(&x);
-            std::cout << "Message from <" << text.getFrom() << ">: " << text.getText() 
-               << "received at " << y << std::endl;
+            cout << "Message from <" << text.getFrom() << ">: " << text.getText()
+               << "received at " << y << endl;
         }
 }
 
@@ -137,16 +137,16 @@ void Chat::userMenu()
     while (currentUser != nullptr)
     {
         char user_choice;
-        std::cout << "\033[93m" << "************** User Menu: Choose an option: ***************" << std::endl;
-        std::cout << "\033[93m" << " 1 - Read messages | 2 - Send a message | 3 - Logout / Return to start" << endl;
-        std::cin >> user_choice;
-        std::cout << endl;
+        cout << "\033[93m" << "************** User Menu: Choose an option: ***************" << endl;
+        cout << "\033[93m" << " 1 - Read messages | 2 - Send a message | 3 - Logout / Return to start" << endl;
+        cin >> user_choice;
+        cout << endl;
         switch (user_choice)
         {
         case '1':
             showMessages();
-            std::cout << endl;
-            std::cout << "Hit Enter to continue ... " << std::endl;
+            cout << endl;
+            cout << "Hit Enter to continue ... " << endl;
             (void)getchar();
             break;
         case '2':
@@ -157,7 +157,7 @@ void Chat::userMenu()
             break;
         default:
             logout();
-            std::cout << "Wrong input. Return to start" << std::endl;
+            cout << "Wrong input. Return to start" << endl;
         }
     }
 }
@@ -168,10 +168,10 @@ void Chat::initialMenu()
     while (chat_enable)
     {
         char user_choise;
-        std::cout << "*********** Initial Menu: Choose an option: ***************" << std::endl;
-        std::cout << "   1 - new user sign-up | 2 - sign-in | 0 - exit" << std::endl;
-        std::cin >> user_choise;
-        std::cout << endl;
+        cout << "*********** Initial Menu: Choose an option: ***************" << endl;
+        cout << "   1 - new user sign-up | 2 - sign-in | 0 - exit" << endl;
+        cin >> user_choise;
+        cout << endl;
 
         switch (user_choise)
         {
@@ -182,11 +182,11 @@ void Chat::initialMenu()
             login();
             break;
         case '0':
-            std::cout << "Exit" << std:: endl;
+            cout << "Exit" <<  endl;
             chat_enable = false;
             break;
         default:
-            std::cout << "Wrong input. Exit" << std::endl;
+            cout << "Wrong input. Exit" << endl;
             chat_enable = false;
             break;
         }
