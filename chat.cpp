@@ -101,7 +101,6 @@ void Chat::showUsersByLogin()
         std::cout << user.get_login() << std::endl;
 }
 
-
 void Chat::createMessage()
 {
     std::string from, to, text;
