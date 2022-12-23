@@ -99,7 +99,7 @@ void Chat::showUsersByLogin()
 }
 
 
-void Chat::createMessage(std::string From, std::string To, std::string Text) 
+void Chat::createMessage() 
 {
     std::string from, to, text;
     std::cout << "Users online:" << std::endl;
