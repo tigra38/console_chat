@@ -98,16 +98,8 @@ void Chat::showUsersByLogin()
         std::cout << user.get_login() << std::endl;
 }
 
-void Chat::showMessages()
-{
-    for (auto& text : _messages)
-        if (text.getTo() == currentUser->get_login())
-            std::cout << "Message *" << text.getText() 
-            << "* from user *" << text.getFrom() << "*"
-            << std::endl;
-}
 
-void Chat::createMessage() 
+void Chat::createMessage(std::string From, std::string To, std::string Text) 
 {
     std::string from, to, text;
     std::cout << "Users online:" << std::endl;
@@ -115,11 +107,21 @@ void Chat::createMessage()
     std::cout << " Enter addressee login: " << endl;
     std::cin >> to;
     from = currentUser->get_login();
+
     std::cout << "Write your message, press enter to send: " << endl;
     std::cin >> text;
     _messages.emplace_back(from, to, text);
     std::cout << "Message *" << text << "* from user *" << from << "* to user *" << to << "* sent. " << std::endl;
     userMenu();
+}
+
+void Chat::showMessages()
+{
+    for (auto& text : _messages)
+        if (currentUser->get_login() != text.getFrom())
+        {
+            std::cout << "<" << text.getFrom() << ">: " << text.getText() << std::endl;
+        }
 }
 
 void Chat::userMenu()
