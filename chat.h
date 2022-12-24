@@ -27,4 +27,5 @@ public:
     size_t get_users();
     void addUser();
     void showMessages();
+    void sentMessages();
 };
