@@ -125,7 +125,7 @@ void Chat::createMessage()
             if (text != "") break;
         }
         _messages.emplace_back(from, to, text, timestamp);
-        cout << "Message *" << text << "* from user *" << from << "* to user *" << to << "* sent. " << endl;
+        cout << "Message '" << text << "' from user <" << from << "> to user <" << to << "> sent. " << endl;
     }
 
     userMenu();
@@ -137,7 +137,12 @@ void Chat::showMessages()
     {
         auto x = text.getTime();
         auto y = ctime(&x);
-        if (currentUser->get_login() != text.getFrom())
+        if ((currentUser->get_login() != text.getFrom()) && (text.getTo() == "all"))
+        {
+            cout << "Message from <" << text.getFrom() << ">: " << "'" << text.getText() << "'"
+                << " received at " << y << endl;
+        }
+        else if ((currentUser->get_login() != text.getFrom()) && (currentUser->get_login() == text.getTo()))
         {
             cout << "Message from <" << text.getFrom() << ">: " << "'" << text.getText() << "'"
                 << " received at " << y << endl;
