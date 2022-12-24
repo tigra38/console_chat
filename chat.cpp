@@ -120,7 +120,10 @@ void Chat::createMessage()
     {
         from = currentUser->get_login();
         cout << "Write your message, press enter to send: " << endl;
-        cin >> text;
+        while (getline(cin, text))
+        {
+            if (text != "") break;
+        }
         _messages.emplace_back(from, to, text, timestamp);
         cout << "Message *" << text << "* from user *" << from << "* to user *" << to << "* sent. " << endl;
     }
