@@ -24,8 +24,8 @@ public:
     Chat& operator=(Chat& _list) = delete;
     void setCurrentuser(User* user);
     void getCurrentuser();
-    size_t get_users();
     void addUser();
-    void showMessages();
+    void showMessages(bool toAll);
+    void showAllMessagesWith();
     void sentMessages();
 };
