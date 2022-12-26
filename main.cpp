@@ -19,9 +19,6 @@ int main()
    
     Chat<string> chat1;
     try {
-        chat1.addUser("test1", "123");
-        chat1.addUser("test2", "123");
-        chat1.addUser("test3", "123");
         chat1.initialMenu();
     }
     catch (exception& e) {

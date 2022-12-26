@@ -4,9 +4,28 @@
 #include <string>
 #include <chrono>
 #include <ctime>
+#include <exception>
 
 using namespace std;
 using chrono::system_clock;
+
+class bad_emptylogin : public exception
+{
+public:
+    virtual const char* what() const noexcept override
+    {
+        return "Too many empty login!";
+    }
+};
+
+class bad_password : public exception
+{
+public:
+    virtual const char* what() const noexcept override
+    {
+        return "Too many incorrect password!";
+    }
+};
 
 template <typename T> void Chat<T>::setCurrentuser(User* user)
 {
@@ -23,8 +42,18 @@ template <typename T> void Chat<T>::getCurrentuser() const
 
 template <typename T> void Chat<T>::login() {
     T login, password;
-    cout << "Sign-in. Enter login:" << endl;
-    cin >> login;
+    for (size_t i = 0; i < 6; ++i)
+    {
+        cout << "Sign-in. Enter login:" << endl;
+        cin >> login;
+        if (login != "") {
+            break;
+        }
+        else if (login == "" && i < 5) {
+            cout << "Empty login! Try again! (" << i+1 << "/5)" << endl;
+        }
+        else throw bad_emptylogin();
+    }
     bool success = false;
     User* temp;
     for (auto& user : _users) {
@@ -35,18 +64,24 @@ template <typename T> void Chat<T>::login() {
         }
     }
     if (success) {
-        cout << "Enter password:" << endl;
-        cin >> password;
-        if (temp->pwdVerify(password)) {
+        for (size_t i = 0; i < 6; ++i)
+        {
+            cout << "Enter password:" << endl;
+            cin >> password;
+            if (temp->pwdVerify(password)) {
+                break;
+            }
+            else if (!temp->pwdVerify(password) && i < 5) {
+                cout << "Incorrect Password! Try again (" << i + 1 << "/5)" << endl;
+            }
+            else throw bad_password();
+        }
             system("cls");
             cout << "Welcome, " << temp->get_login() << "!" << endl;
             this->setCurrentuser(temp);
             cout << endl;
             this->userMenu();
-        }
-        else {
-            cout << "Password incorrect!" << endl;
-        }
+
     }
     else {
         cout << "No such user!" << endl;
@@ -56,11 +91,6 @@ template <typename T> void Chat<T>::login() {
 template <typename T> void Chat<T>::logout() {
     this->setCurrentuser(nullptr);
     system("cls");
-}
-
-template <typename T> void Chat<T>::addUser(T username, T password)
-{
-    _users.emplace_back(username, password);
 }
 
 template <typename T> void Chat<T>::addUser()
