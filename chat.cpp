@@ -8,17 +8,12 @@
 using namespace std;
 using chrono::system_clock;
 
-Chat::Chat()
-{
-
-}
-
 void Chat::setCurrentuser(User* user)
 {
     currentUser = user;
 }
 
-void Chat::getCurrentuser()
+void Chat::getCurrentuser() const
 {
     if (currentUser != nullptr) {
         cout << currentUser->get_login() << endl;
@@ -98,14 +93,14 @@ void Chat::addUser()
     }
 }
 
-void Chat::showUsersByLogin()
+void Chat::showUsersByLogin() const
 {
     for (auto& user : _users)
         if (user.get_login() != currentUser->get_login())
             cout << user.get_login() << endl;
 }
 
-void Chat::createMessage(bool toAll = false)
+template <typename T> void Chat::createMessage(bool toAll = false)
 {
     string from, to, text;
     time_t timestamp;
@@ -138,7 +133,7 @@ void Chat::createMessage(bool toAll = false)
     userMenu();
 }
 
-void Chat::showMessages(bool toAll = false)
+template <typename T> void Chat::showMessages(bool toAll = false) const
 {
     size_t message_num = 0;
     for (auto& text : _messages)
@@ -163,7 +158,7 @@ void Chat::showMessages(bool toAll = false)
     if (!message_num) cout << "No messages" << endl;
 }
 
-void Chat::showAllMessagesWith()
+template <typename T> void Chat::showAllMessagesWith() const
 {
     string with;
     size_t message_num = 0;
@@ -282,9 +277,4 @@ void Chat::initialMenu()
         }
     }
     cout << "Chat session terminated! See you again!" << endl;
-}
-
-Chat::~Chat()
-{
-
 }
