@@ -17,7 +17,7 @@ public:
     void userMenu();
     void login();
     void logout();
-    void createMessage(); 
+    void createMessage(bool toAll); 
     void showUsersByLogin();
     virtual ~Chat();
     Chat(Chat& _arr) = delete;
@@ -25,6 +25,7 @@ public:
     void setCurrentuser(User* user);
     void getCurrentuser();
     void addUser();
+    void addUser(std::string username, std::string password);
     void showMessages(bool toAll);
     void showAllMessagesWith();
     void sentMessages();

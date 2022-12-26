@@ -18,7 +18,6 @@ void Chat::setCurrentuser(User* user)
     currentUser = user;
 }
 
-
 void Chat::getCurrentuser()
 {
     if (currentUser != nullptr) {
@@ -64,6 +63,11 @@ void Chat::logout() {
     system("cls");
 }
 
+void Chat::addUser(string username, string password)
+{
+    _users.emplace_back(username, password);
+}
+
 void Chat::addUser()
 {
     string login, password;
@@ -101,65 +105,68 @@ void Chat::showUsersByLogin()
             cout << user.get_login() << endl;
 }
 
-void Chat::createMessage()
+void Chat::createMessage(bool toAll = false)
 {
     string from, to, text;
     time_t timestamp;
-    //char ts;
     system_clock::time_point value_t = system_clock::now();
     timestamp = system_clock::to_time_t(value_t);
-    cout << "Users online:" << endl;
-    showUsersByLogin();
-    cout << " Enter addressee login: " << endl;
-    cin >> to;
-    if (currentUser->get_login() == to)
-    {
-        cout << "You can't send a message to yourself" << endl;
+    if (toAll) {
+        to = "all";
     }
     else
     {
-        from = currentUser->get_login();
-        cout << "Write your message, press enter to send: " << endl;
-        while (getline(cin, text))
-        {
-            if (text != "") break;
+        while (1)  {
+            cout << "Users online:" << endl;
+            showUsersByLogin();
+            cout << "Enter recipient login: " << endl;
+            cin >> to;
+            if (to == currentUser->get_login()) {
+                cout << "You can't send a message to yourself" << endl;
+            }
+            else break;
         }
-        _messages.emplace_back(from, to, text, timestamp);
-        cout << "Message '" << text << "' from user <" << from << "> to user <" << to << "> sent. " << endl;
     }
-
+    from = currentUser->get_login();
+    cout << "Write your message, press enter to send: " << endl;
+    while (getline(cin, text))
+    {
+        if (text != "") break;
+    }
+    _messages.emplace_back(from, to, text, timestamp);
+    cout << "Message '" << text << "' from user <" << from << "> to user <" << to << "> sent. " << endl;
     userMenu();
 }
 
-void Chat::showMessages(bool toAll)
+void Chat::showMessages(bool toAll = false)
 {
+    size_t message_num = 0;
     for (auto& text : _messages)
     {
         auto x = text.getTime();
         auto y = ctime(&x);
-        if (currentUser->get_login() != text.getFrom())
+        if (toAll)
         {
-            if (toAll)
-            {
-                if (text.getTo() == "all") {
-                    cout << "Broadcast message from <" << text.getFrom() << ">: " << "'" << text.getText() << "'"
-                        << " received at " << y << endl;
-                }
+            if (text.getTo() == "all") {
+                cout << "<" << text.getFrom() << ">: " << "'" << text.getText() << "'" << " received at " << y << endl;
+                message_num++;
             }
-            else
-            {
-                if (currentUser->get_login() == text.getTo()) {
-                    cout << "Message from <" << text.getFrom() << ">: " << "'" << text.getText() << "'"
-                        << " received at " << y << endl;
-                }
+        }
+        else
+        {
+            if (currentUser->get_login() == text.getTo() && currentUser->get_login() != text.getFrom()) {
+                cout << "From <" << text.getFrom() << ">: " << "'" << text.getText() << "'" << " received at " << y << endl;
+                message_num++;
             }
         }
     }
+    if (!message_num) cout << "No messages" << endl;
 }
 
 void Chat::showAllMessagesWith()
 {
     string with;
+    size_t message_num = 0;
     showUsersByLogin();
     cout << " Enter addressee login: " << endl;
     cin >> with;
@@ -176,15 +183,18 @@ void Chat::showAllMessagesWith()
             if (currentUser->get_login() == text.getFrom())
             {
                 cout << text.getFrom() << " >>> " << text.getTo() << ": " << text.getText()
-                    << " (received at " << y << ")" << endl;
+                    << " | received at " << y << endl;
+                message_num++;
             }
             else if (currentUser->get_login() == text.getTo())
             {
                 cout << text.getTo() << " <<< " << text.getFrom() << ": " << text.getText()
-                    << " (received at " << y << ")" << endl;
+                    << " | received at " << y << endl;
+                message_num++;
             }
         }
     }
+    if (!message_num) cout << "No messages" << endl;
 }
 
 void Chat::sentMessages()
@@ -204,40 +214,34 @@ void Chat::userMenu()
     while (currentUser != nullptr)
     {
         char user_choice;
+        cout << endl;
         cout << "\033[93m" << "************** User Menu: Choose an option: ***************" << endl;
-        cout << "\033[93m" << " 1 - Read new messages | 2 - Read messages with... | 3 - Read broadcast messages | 4 - Send a message | 5 - View sent messages | 6 - Logout / Return to start" << endl;
+        cout << "\033[93m" << "1 - Read new messages | 2 - Read messages with... | 3 - Read broadcast messages" << endl;
+        cout << "\033[93m" << "4 - Send a message | 5 - Send a broadcast message | 6 - View sent messages" << endl;
+        cout << "\033[93m" << "7 - Logout / Return to start" << endl;
         cin >> user_choice;
         cout << endl;
         switch (user_choice)
         {
         case '1':
-            showMessages(false);
-            cout << endl;
-            cout << "Hit Enter to continue ... " << endl;
-            (void)getchar();
+            showMessages();
             break;
         case '2':
             showAllMessagesWith();
-            cout << endl;
-            cout << "Hit Enter to continue ... " << endl;
-            (void)getchar();
             break;
         case '3':
             showMessages(true);
-            cout << endl;
-            cout << "Hit Enter to continue ... " << endl;
-            (void)getchar();
             break;
         case '4':
             createMessage();
             break;
         case '5':
-            sentMessages();
-            cout << endl;
-            cout << "Hit Enter to continue ... " << endl;
-            (void)getchar();
+            createMessage(true);
             break;
         case '6':
+            sentMessages();
+            break;
+        case '7':
             logout();
             break;
         default:
@@ -245,6 +249,7 @@ void Chat::userMenu()
             cout << "Wrong input. Return to start" << endl;
         }
     }
+    cout << endl;
 }
 
 void Chat::initialMenu()
