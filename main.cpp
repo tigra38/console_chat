@@ -2,6 +2,7 @@
 #include <string>
 #include "user.h"
 #include "chat.h"
+#include "chat.cpp"
 #include <chrono>
 #include <ctime>
 #include <exception>
@@ -16,7 +17,7 @@ int main()
    tt = system_clock::to_time_t(today);
    cout << "Today is: " << ctime(&tt);
    
-    Chat chat1;
+    Chat<string> chat1;
     try {
         chat1.addUser("test1", "123");
         chat1.addUser("test2", "123");

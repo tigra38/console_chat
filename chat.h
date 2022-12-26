@@ -5,7 +5,7 @@
 #include "user.h"
 #include "message.h"
 
-class Chat {
+template <typename T> class Chat {
 private:
     std::vector<Message> _messages;
     std::vector<User> _users;
@@ -20,15 +20,15 @@ public:
     void initialMenu();
     void userMenu();
     void addUser();
-    void addUser(std::string username, std::string password);
+    void addUser(T username, T password);
     void login();
     void logout();
-    void showUsersByLogin() const;
+    void showUsersByLogin();
     void setCurrentuser(User* user);
     void getCurrentuser() const;
     
-    template <typename T> void createMessage(bool toAll);
-    template <typename T> void showMessages(bool toAll) const;
-    template <typename T> void showAllMessagesWith() const;
+    void createMessage(bool toAll);
+    void showMessages(bool toAll);
+    void showAllMessagesWith();
     void sentMessages();
 };

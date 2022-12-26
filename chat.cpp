@@ -8,12 +8,12 @@
 using namespace std;
 using chrono::system_clock;
 
-void Chat::setCurrentuser(User* user)
+template <typename T> void Chat<T>::setCurrentuser(User* user)
 {
     currentUser = user;
 }
 
-void Chat::getCurrentuser() const
+template <typename T> void Chat<T>::getCurrentuser() const
 {
     if (currentUser != nullptr) {
         cout << currentUser->get_login() << endl;
@@ -21,8 +21,8 @@ void Chat::getCurrentuser() const
     else cout << "Nobody logged in" << endl;
 }
 
-void Chat::login() {
-    string login, password;
+template <typename T> void Chat<T>::login() {
+    T login, password;
     cout << "Sign-in. Enter login:" << endl;
     cin >> login;
     bool success = false;
@@ -53,19 +53,19 @@ void Chat::login() {
     }
 }
 
-void Chat::logout() {
+template <typename T> void Chat<T>::logout() {
     this->setCurrentuser(nullptr);
     system("cls");
 }
 
-void Chat::addUser(string username, string password)
+template <typename T> void Chat<T>::addUser(T username, T password)
 {
     _users.emplace_back(username, password);
 }
 
-void Chat::addUser()
+template <typename T> void Chat<T>::addUser()
 {
-    string login, password;
+    T login, password;
     cout << "Register new user. Enter login:" << endl;
     cin >> login;
     bool error = true;
@@ -93,16 +93,16 @@ void Chat::addUser()
     }
 }
 
-void Chat::showUsersByLogin() const
+template <typename T> void Chat<T>::showUsersByLogin()
 {
     for (auto& user : _users)
         if (user.get_login() != currentUser->get_login())
             cout << user.get_login() << endl;
 }
 
-template <typename T> void Chat::createMessage(bool toAll = false)
+template <typename T> void Chat<T>::createMessage(bool toAll = false)
 {
-    string from, to, text;
+    T from, to, text;
     time_t timestamp;
     system_clock::time_point value_t = system_clock::now();
     timestamp = system_clock::to_time_t(value_t);
@@ -133,24 +133,24 @@ template <typename T> void Chat::createMessage(bool toAll = false)
     userMenu();
 }
 
-template <typename T> void Chat::showMessages(bool toAll = false) const
+template <typename T> void Chat<T>::showMessages(bool toAll = false)
 {
     size_t message_num = 0;
     for (auto& text : _messages)
     {
-        auto x = text.getTime();
-        auto y = ctime(&x);
+        time_t x = text.getTime();
+        //auto y = ctime(&x);
         if (toAll)
         {
             if (text.getTo() == "all") {
-                cout << "<" << text.getFrom() << ">: " << "'" << text.getText() << "'" << " received at " << y << endl;
+                cout << "<" << text.getFrom() << ">: " << "'" << text.getText() << "'" << " received at " << ctime(&x) << endl;
                 message_num++;
             }
         }
         else
         {
             if (currentUser->get_login() == text.getTo() && currentUser->get_login() != text.getFrom()) {
-                cout << "From <" << text.getFrom() << ">: " << "'" << text.getText() << "'" << " received at " << y << endl;
+                cout << "From <" << text.getFrom() << ">: " << "'" << text.getText() << "'" << " received at " << ctime(&x) << endl;
                 message_num++;
             }
         }
@@ -158,9 +158,9 @@ template <typename T> void Chat::showMessages(bool toAll = false) const
     if (!message_num) cout << "No messages" << endl;
 }
 
-template <typename T> void Chat::showAllMessagesWith() const
+template <typename T> void Chat<T>::showAllMessagesWith()
 {
-    string with;
+    T with;
     size_t message_num = 0;
     showUsersByLogin();
     cout << " Enter addressee login: " << endl;
@@ -173,18 +173,18 @@ template <typename T> void Chat::showAllMessagesWith() const
     {
         for (auto& text : _messages)
         {
-            auto x = text.getTime();
-            auto y = ctime(&x);
+            time_t x = text.getTime();
+            //auto y = ctime(&x);
             if (currentUser->get_login() == text.getFrom())
             {
                 cout << text.getFrom() << " >>> " << text.getTo() << ": " << text.getText()
-                    << " | received at " << y << endl;
+                    << " | received at " << ctime(&x) << endl;
                 message_num++;
             }
             else if (currentUser->get_login() == text.getTo())
             {
                 cout << text.getTo() << " <<< " << text.getFrom() << ": " << text.getText()
-                    << " | received at " << y << endl;
+                    << " | received at " << ctime(&x) << endl;
                 message_num++;
             }
         }
@@ -192,7 +192,7 @@ template <typename T> void Chat::showAllMessagesWith() const
     if (!message_num) cout << "No messages" << endl;
 }
 
-void Chat::sentMessages()
+template <typename T> void Chat<T>::sentMessages()
 {
     for (auto& text : _messages)
         if (currentUser->get_login() == text.getFrom())
@@ -204,7 +204,7 @@ void Chat::sentMessages()
         }
 }
 
-void Chat::userMenu()
+template <typename T> void Chat<T>::userMenu()
 {
     while (currentUser != nullptr)
     {
@@ -213,13 +213,13 @@ void Chat::userMenu()
         cout << "\033[93m" << "************** User Menu: Choose an option: ***************" << endl;
         cout << "\033[93m" << "1 - Read new messages | 2 - Read messages with... | 3 - Read broadcast messages" << endl;
         cout << "\033[93m" << "4 - Send a message | 5 - Send a broadcast message | 6 - View sent messages" << endl;
-        cout << "\033[93m" << "7 - Logout / Return to start" << endl;
+        cout << "\033[93m" << "0 - Logout / Return to start" << endl;
         cin >> user_choice;
         cout << endl;
         switch (user_choice)
         {
         case '1':
-            showMessages();
+            showMessages(false);
             break;
         case '2':
             showAllMessagesWith();
@@ -228,7 +228,7 @@ void Chat::userMenu()
             showMessages(true);
             break;
         case '4':
-            createMessage();
+            createMessage(false);
             break;
         case '5':
             createMessage(true);
@@ -247,7 +247,7 @@ void Chat::userMenu()
     cout << endl;
 }
 
-void Chat::initialMenu()
+template <typename T> void Chat<T>::initialMenu()
 {
     bool chat_enable = true;
     while (chat_enable)
