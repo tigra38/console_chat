@@ -27,12 +27,12 @@ public:
     }
 };
 
-template <typename T> void Chat<T>::setCurrentuser(User* user)
+template <typename T> void Chat<T>::setCurrentUser(User* user)
 {
     currentUser = user;
 }
 
-template <typename T> void Chat<T>::getCurrentuser() const
+template <typename T> void Chat<T>::getCurrentUser() const
 {
     if (currentUser != nullptr) {
         cout << currentUser->get_login() << endl;
@@ -78,7 +78,7 @@ template <typename T> void Chat<T>::login() {
         }
             system("cls");
             cout << "Welcome, " << temp->get_login() << "!" << endl;
-            this->setCurrentuser(temp);
+            this->setCurrentUser(temp);
             cout << endl;
             this->userMenu();
 
@@ -89,7 +89,7 @@ template <typename T> void Chat<T>::login() {
 }
 
 template <typename T> void Chat<T>::logout() {
-    this->setCurrentuser(nullptr);
+    this->setCurrentUser(nullptr);
     system("cls");
 }
 
@@ -133,9 +133,8 @@ template <typename T> void Chat<T>::showUsersByLogin()
 template <typename T> void Chat<T>::createMessage(bool toAll = false)
 {
     T from, to, text;
-    time_t timestamp;
     system_clock::time_point value_t = system_clock::now();
-    timestamp = system_clock::to_time_t(value_t);
+    time_t timestamp = system_clock::to_time_t(value_t);
     if (toAll) {
         to = "all";
     }
@@ -277,11 +276,15 @@ template <typename T> void Chat<T>::userMenu()
     cout << endl;
 }
 
-template <typename T> void Chat<T>::initialMenu()
+template <typename T> void Chat<T>::runChat()
 {
     bool chat_enable = true;
     while (chat_enable)
     {
+        system_clock::time_point today = system_clock::now();
+        time_t tt;
+        tt = system_clock::to_time_t(today);
+        cout << "Today is: " << ctime(&tt);
         char user_choise;
         cout << "\033[0m" << "*********** Initial Menu: Choose an option: ***************" << endl;
         cout << "\033[0m" << "   1 - new user sign-up | 2 - sign-in | 0 - exit" << endl;

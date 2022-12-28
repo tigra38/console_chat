@@ -1,9 +1,10 @@
 #pragma once
-#include <iostream>
-#include <string>
-#include <memory> 
+//#include <iostream>
+//#include <string>
+//#include <memory> 
 #include "user.h"
 #include "message.h"
+#include <vector>
 
 template <typename T> class Chat {
 private:
@@ -17,15 +18,15 @@ public:
     Chat(Chat& _arr) = delete;
     Chat& operator=(Chat& _list) = delete;
 
-    void initialMenu();
+    void runChat();
     void userMenu();
     void addUser();
     void addUser(T username, T password);
     void login();
     void logout();
     void showUsersByLogin();
-    void setCurrentuser(User* user);
-    void getCurrentuser() const;
+    void setCurrentUser(User* user);
+    void getCurrentUser() const;
     
     void createMessage(bool toAll);
     void showMessages(bool toAll);
