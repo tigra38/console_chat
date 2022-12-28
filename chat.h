@@ -17,7 +17,7 @@ public:
     Chat(Chat& _arr) = delete;
     Chat& operator=(Chat& _list) = delete;
 
-    void initialMenu();
+    void runChat();
     void userMenu();
     void addUser();
     void addUser(T username, T password);

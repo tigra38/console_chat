@@ -9,9 +9,10 @@
 
 int main()
 {
-    Chat<string> chat1;
+    
     try {
-        chat1.initialMenu();
+        Chat<string> chat;
+        chat.runChat();
     }
     catch (exception& e) {
         cout << e.what();

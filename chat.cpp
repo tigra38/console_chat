@@ -277,7 +277,7 @@ template <typename T> void Chat<T>::userMenu()
     cout << endl;
 }
 
-template <typename T> void Chat<T>::initialMenu()
+template <typename T> void Chat<T>::runChat()
 {
     bool chat_enable = true;
     while (chat_enable)
