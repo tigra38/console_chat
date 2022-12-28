@@ -133,7 +133,6 @@ template <typename T> void Chat<T>::showUsersByLogin()
 template <typename T> void Chat<T>::createMessage(bool toAll = false)
 {
     T from, to, text;
-    //time_t timestamp;
     system_clock::time_point value_t = system_clock::now();
     time_t timestamp = system_clock::to_time_t(value_t);
     if (toAll) {
