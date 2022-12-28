@@ -4,6 +4,7 @@
 //#include <memory> 
 #include "user.h"
 #include "message.h"
+#include <vector>
 
 template <typename T> class Chat {
 private:
