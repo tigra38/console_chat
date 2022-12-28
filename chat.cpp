@@ -282,10 +282,6 @@ template <typename T> void Chat<T>::initialMenu()
     bool chat_enable = true;
     while (chat_enable)
     {
-        system_clock::time_point today = system_clock::now();
-        time_t tt;
-        tt = system_clock::to_time_t(today);
-        cout << "Today is: " << ctime(&tt);
         char user_choise;
         cout << "\033[0m" << "*********** Initial Menu: Choose an option: ***************" << endl;
         cout << "\033[0m" << "   1 - new user sign-up | 2 - sign-in | 0 - exit" << endl;
