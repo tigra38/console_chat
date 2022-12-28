@@ -1,7 +1,7 @@
 #pragma once
-#include <iostream>
-#include <string>
-#include <memory> 
+//#include <iostream>
+//#include <string>
+//#include <memory> 
 #include "user.h"
 #include "message.h"
 
@@ -24,8 +24,8 @@ public:
     void login();
     void logout();
     void showUsersByLogin();
-    void setCurrentuser(User* user);
-    void getCurrentuser() const;
+    void setCurrentUser(User* user);
+    void getCurrentUser() const;
     
     void createMessage(bool toAll);
     void showMessages(bool toAll);
