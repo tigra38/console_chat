@@ -1,9 +1,7 @@
 ﻿#include <iostream>
-#include <string>
 #include "user.h"
 #include "chat.h"
 #include "chat.cpp"
-#include <exception>
 
 
 
@@ -11,11 +9,11 @@ int main()
 {
     
     try {
-        Chat<string> chat;
+        Chat<std::string> chat;
         chat.runChat();
     }
-    catch (exception& e) {
-        cout << e.what();
+    catch (std::exception& e) {
+        std::cout << e.what() << std::endl;
     }
 
     return 0;

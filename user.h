@@ -15,10 +15,10 @@ public:
         : _login(login), _password(password) {}
     virtual ~User() = default;
     const std::string get_login() { return _login; }
-    bool pwdVerify(std::string password) {
+    bool pwdVerify(const std::string& password) const {
         if (password == _password)
             return true;
-        else return false;
+        return false;
     }
     
 };

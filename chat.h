@@ -1,7 +1,4 @@
 #pragma once
-//#include <iostream>
-//#include <string>
-//#include <memory> 
 #include "user.h"
 #include "message.h"
 #include <vector>
@@ -21,9 +18,8 @@ public:
     void runChat();
     void userMenu();
     void addUser();
-    void addUser(T username, T password);
-    void login();
-    void logout();
+    void loginOperation();
+    void logoutOperation();
     void showUsersByLogin();
     void setCurrentUser(User* user);
     void getCurrentUser() const;

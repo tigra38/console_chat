@@ -9,21 +9,21 @@
 using namespace std;
 using chrono::system_clock;
 
-class bad_emptylogin : public exception
+class bad_login : public exception
 {
 public:
-    virtual const char* what() const noexcept override
+    const char* what() const noexcept override
     {
-        return "Too many empty login!";
+        return "Too many failed login attempts!";
     }
 };
 
 class bad_password : public exception
 {
 public:
-    virtual const char* what() const noexcept override
+    const char* what() const noexcept override
     {
-        return "Too many incorrect password!";
+        return "too many bad password attempts!";
     }
 };
 
@@ -40,19 +40,19 @@ template <typename T> void Chat<T>::getCurrentUser() const
     else cout << "Nobody logged in" << endl;
 }
 
-template <typename T> void Chat<T>::login() {
+template <typename T> void Chat<T>::loginOperation() {
     T login, password;
-    for (size_t i = 0; i < 6; ++i)
+    for (size_t try_num = 0; try_num < 6; ++try_num)
     {
         cout << "Sign-in. Enter login:" << endl;
         cin >> login;
         if (login != "") {
             break;
         }
-        else if (login == "" && i < 5) {
-            cout << "Empty login! Try again! (" << i+1 << "/5)" << endl;
+        if (login == "" && try_num < 5) {
+            cout << "Empty login! Try again! (" << try_num + 1 << "/5)" << endl;
         }
-        else throw bad_emptylogin();
+        else throw bad_login();
     }
     bool success = false;
     User* temp;
@@ -64,15 +64,15 @@ template <typename T> void Chat<T>::login() {
         }
     }
     if (success) {
-        for (size_t i = 0; i < 6; ++i)
+        for (size_t try_num = 0; try_num < 6; ++try_num)
         {
             cout << "Enter password:" << endl;
             cin >> password;
             if (temp->pwdVerify(password)) {
                 break;
             }
-            else if (!temp->pwdVerify(password) && i < 5) {
-                cout << "Incorrect Password! Try again (" << i + 1 << "/5)" << endl;
+            if (!temp->pwdVerify(password) && try_num < 5) {
+                cout << "Incorrect Password! Try again (" << try_num + 1 << "/5)" << endl;
             }
             else throw bad_password();
         }
@@ -88,7 +88,7 @@ template <typename T> void Chat<T>::login() {
     }
 }
 
-template <typename T> void Chat<T>::logout() {
+template <typename T> void Chat<T>::logoutOperation() {
     this->setCurrentUser(nullptr);
     system("cls");
 }
@@ -266,10 +266,10 @@ template <typename T> void Chat<T>::userMenu()
             sentMessages();
             break;
         case '7':
-            logout();
+            logoutOperation();
             break;
         default:
-            logout();
+            logoutOperation();
             cout << "Wrong input. Return to start" << endl;
         }
     }
@@ -297,7 +297,7 @@ template <typename T> void Chat<T>::runChat()
             addUser();
             break;
         case '2':
-            login();
+            loginOperation();
             break;
         case '0':
             cout << "Exit" << endl;
