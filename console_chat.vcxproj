@@ -106,10 +106,12 @@
   <ItemGroup>
     <ClCompile Include="chat.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="sha1.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="chat.h" />
     <ClInclude Include="message.h" />
+    <ClInclude Include="sha1.h" />
     <ClInclude Include="user.h" />
   </ItemGroup>
   <ItemGroup>

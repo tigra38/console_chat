@@ -1,10 +1,12 @@
 #include "chat.h"
-#include "user.h"
+//#include "user.h"
 #include "message.h"
+#include "sha1.h"
 #include <string>
 #include <chrono>
 #include <ctime>
 #include <exception>
+#include <iomanip>
 
 using namespace std;
 using chrono::system_clock;
@@ -27,21 +29,35 @@ public:
     }
 };
 
-template <typename T> void Chat<T>::setCurrentUser(User* user)
+template <typename T> void Chat<T>::setCurrentUser(std::string user)
 {
     currentUser = user;
 }
 
 template <typename T> void Chat<T>::getCurrentUser() const
 {
-    if (currentUser != nullptr) {
+    if (!currentUser.empty()) {
         cout << currentUser->get_login() << endl;
     }
     else cout << "Nobody logged in" << endl;
 }
 
+template <typename T> bool Chat<T>::pwdVerify(const std::string& password) const {
+    unsigned int* digest = sha1((char* )password.data(), password.size());
+
+    bool cmpHashes = !memcmp(
+        data[i].pass_sha1_hash,
+        digest,
+        SHA1HASHLENGTHBYTES);
+    delete[] digest;
+    return cmpHashes;
+}
+
+
 template <typename T> void Chat<T>::loginOperation() {
     T login, password;
+    map<std::string, unsigned int *>::iterator it;
+    
     for (size_t try_num = 0; try_num < 6; ++try_num)
     {
         cout << "Sign-in. Enter login:" << endl;
@@ -55,30 +71,36 @@ template <typename T> void Chat<T>::loginOperation() {
         else throw bad_login();
     }
     bool success = false;
-    User* temp;
-    for (auto& user : _users) {
-        if (user.get_login() == login) {
-            success = true;
-            temp = &user;
-            break;
-        }
+
+    it = _usr.find(login);
+    if (it != _usr.end()) {
+        cout << "Found: " << it->first << " " << it->second << endl;
+        success = true;
     }
+
     if (success) {
         for (size_t try_num = 0; try_num < 6; ++try_num)
         {
             cout << "Enter password:" << endl;
             cin >> password;
-            if (temp->pwdVerify(password)) {
+            unsigned int* digest = sha1((char*)password.data(), sizeof(password) - 1);
+
+            if (!memcmp(it->second, digest, SHA1HASHLENGTHBYTES)) {
+                cout << "equal!!!" << endl;
+                delete[] digest;
                 break;
             }
-            if (!temp->pwdVerify(password) && try_num < 5) {
+            delete[] digest;
+
+            if (try_num < 5) {
                 cout << "Incorrect Password! Try again (" << try_num + 1 << "/5)" << endl;
             }
             else throw bad_password();
+
         }
             system("cls");
-            cout << "Welcome, " << temp->get_login() << "!" << endl;
-            this->setCurrentUser(temp);
+            cout << "Welcome, " << it->first << "!" << endl;
+            this->setCurrentUser(it->first);
             cout << endl;
             this->userMenu();
 
@@ -89,7 +111,7 @@ template <typename T> void Chat<T>::loginOperation() {
 }
 
 template <typename T> void Chat<T>::logoutOperation() {
-    this->setCurrentUser(nullptr);
+    this->setCurrentUser("");
     system("cls");
 }
 
@@ -104,66 +126,90 @@ template <typename T> void Chat<T>::addUser()
     else
     {
         error = false;
-        for (auto& user : _users)
-        {
-            if (user.get_login() == login)
-            {
-                cout << "A user with this name is already registered";
-                error = true;
-                break;
-            }
+        map<std::string, unsigned int*>::iterator it = _usr.find(login);
+        if (it != _usr.end()) {
+            cout << "A user with this name is already registered!" << endl;
+            error = true;
         }
     }
     if (!error)
     {
         cout << "Enter password:" << endl;
         cin >> password;
-        _users.emplace_back(login, password);
+        //_users.emplace_back(login, password);
+        _usr.emplace(make_pair(login, sha1((char*)password.data(), sizeof(password) - 1)));
         cout << "User added." << endl;
+        /*for (map<string, unsigned int*>::iterator it = _usr.begin(); it != _usr.end(); ++it)
+        {
+            cout << (*it).first << " : " << (*it).second << endl;
+        }*/
+        
+        unsigned int* digest = sha1((char*)password.data(), sizeof(password) - 1);
+        /*for (int i = 0; i < 5; i++) {
+            std::cout << std::hex << std::setw(8) << std::setfill('0') << digest[i] << "-";
+        }*/
+        cout << endl;
+        delete[] digest;
     }
 }
 
-template <typename T> void Chat<T>::showUsersByLogin()
+template <typename T> int Chat<T>::showUsersByLogin()
 {
-    for (auto& user : _users)
-        if (user.get_login() != currentUser->get_login())
-            cout << user.get_login() << endl;
+    cout << "Users list:" << endl;
+    int num_users = 0;
+    for (map<string, unsigned int*>::iterator it = _usr.begin(); it != _usr.end(); ++it)
+    {
+        if (it != _usr.find(currentUser)) {
+            cout << (*it).first << endl;
+            num_users++;
+        }
+    }
+    if (!num_users) cout << "No another users" << endl;        
+    cout << endl;
+    return num_users;
 }
 
 template <typename T> void Chat<T>::createMessage(bool toAll = false)
 {
-    T from, to, text;
+    T from, to = "", text;
     system_clock::time_point value_t = system_clock::now();
     time_t timestamp = system_clock::to_time_t(value_t);
     if (toAll) {
         to = "all";
     }
-    else
+    else if (showUsersByLogin())
     {
         while (1)  {
-            cout << "Users online:" << endl;
-            showUsersByLogin();
             cout << "Enter recipient login: " << endl;
             cin >> to;
-            if (to == currentUser->get_login()) {
+            if (to == currentUser) {
                 cout << "You can't send a message to yourself" << endl;
+            }
+            //map<string, unsigned int*>::iterator it;
+            else if (_usr.find(to) == _usr.end())
+            {
+                cout << "No such user" << endl;
             }
             else break;
         }
     }
-    from = currentUser->get_login();
-    cout << "Write your message, press enter to send: " << endl;
-    while (getline(cin, text))
+    if (!to.empty())
     {
-        if (text != "") break;
+        from = currentUser;
+        cout << "Write your message, press enter to send: " << endl;
+        while (getline(cin, text))
+        {
+            if (text != "") break;
+        }
+        _messages.emplace_back(from, to, text, timestamp);
+        cout << "Message '" << text << "' from user <" << from << "> to user <" << to << "> sent. " << endl;
+        userMenu();
     }
-    _messages.emplace_back(from, to, text, timestamp);
-    cout << "Message '" << text << "' from user <" << from << "> to user <" << to << "> sent. " << endl;
-    userMenu();
 }
 
 template <typename T> void Chat<T>::showMessages(bool toAll = false)
 {
+    cout << "New messages: " << endl;
     size_t message_num = 0;
     for (auto& text : _messages)
     {
@@ -178,64 +224,74 @@ template <typename T> void Chat<T>::showMessages(bool toAll = false)
         }
         else
         {
-            if (currentUser->get_login() == text.getTo() && currentUser->get_login() != text.getFrom()) {
+            if (currentUser == text.getTo() && currentUser != text.getFrom()) {
                 cout << "From <" << text.getFrom() << ">: " << "'" << text.getText() << "'" << " received at " << ctime(&x) << endl;
                 message_num++;
             }
         }
     }
-    if (!message_num) cout << "No messages" << endl;
+    if (!message_num) {
+        if (toAll) cout << "No broadcast messages" << endl;
+        else cout << "No messages" << endl;
+    }
+        
 }
 
 template <typename T> void Chat<T>::showAllMessagesWith()
 {
+
     T with;
     size_t message_num = 0;
-    showUsersByLogin();
-    cout << " Enter addressee login: " << endl;
-    cin >> with;
-    if (currentUser->get_login() == with)
-    {
-        cout << "You enter your own password" << endl;
-    }
-    else
-    {
-        for (auto& text : _messages)
+    if (showUsersByLogin()) {
+        cout << " Enter addressee login: " << endl;
+        cin >> with;
+        if (currentUser == with)
         {
-            time_t x = text.getTime();
-            //auto y = ctime(&x);
-            if (currentUser->get_login() == text.getFrom())
+            cout << "You enter your own login" << endl;
+        }
+        else
+        {
+            for (auto& text : _messages)
             {
-                cout << text.getFrom() << " >>> " << text.getTo() << ": " << text.getText()
-                    << " | received at " << ctime(&x) << endl;
-                message_num++;
-            }
-            else if (currentUser->get_login() == text.getTo())
-            {
-                cout << text.getTo() << " <<< " << text.getFrom() << ": " << text.getText()
-                    << " | received at " << ctime(&x) << endl;
-                message_num++;
+                time_t x = text.getTime();
+                //auto y = ctime(&x);
+                if (with == text.getTo() && currentUser == text.getFrom())
+                {
+                    cout << text.getFrom() << " >>> " << text.getTo() << ": " << text.getText()
+                        << " | received at " << ctime(&x) << endl;
+                    message_num++;
+                }
+                else if (with == text.getFrom() && currentUser == text.getTo())
+                {
+                    cout << text.getTo() << " <<< " << text.getFrom() << ": " << text.getText()
+                        << " | received at " << ctime(&x) << endl;
+                    message_num++;
+                }
             }
         }
+        if (!message_num) cout << "No messages with user " << with << endl;
     }
-    if (!message_num) cout << "No messages" << endl;
 }
 
 template <typename T> void Chat<T>::sentMessages()
 {
-    for (auto& text : _messages)
-        if (currentUser->get_login() == text.getFrom())
+    int num_messages = 0;
+    for (auto& text : _messages) {
+        if (currentUser == text.getFrom())
         {
             auto x = text.getTime();
             auto y = ctime(&x);
             cout << "Message to <" << text.getTo() << ">: " << "'" << text.getText() << "'"
                 << " received at " << y << endl;
+            num_messages++;
         }
+    }
+    if (!num_messages) cout << "No sent messages" << endl;
 }
 
 template <typename T> void Chat<T>::userMenu()
 {
-    while (currentUser != nullptr)
+    while (!currentUser.empty())
     {
         char user_choice;
         cout << endl;
@@ -265,7 +321,7 @@ template <typename T> void Chat<T>::userMenu()
         case '6':
             sentMessages();
             break;
-        case '7':
+        case '0':
             logoutOperation();
             break;
         default:
