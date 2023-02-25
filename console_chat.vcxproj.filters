@@ -32,9 +32,6 @@
     <ClInclude Include="message.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="user.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="sha1.h">
       <Filter>Header Files</Filter>
     </ClInclude>

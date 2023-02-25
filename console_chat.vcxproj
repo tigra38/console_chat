@@ -112,7 +112,6 @@
     <ClInclude Include="chat.h" />
     <ClInclude Include="message.h" />
     <ClInclude Include="sha1.h" />
-    <ClInclude Include="user.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="CMakeLists.txt" />

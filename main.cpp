@@ -5,9 +5,7 @@
 
 
 
-int main()
-{
-    
+int main() {
     try {
         Chat<std::string> chat;
         chat.runChat();
@@ -15,6 +13,5 @@ int main()
     catch (std::exception& e) {
         std::cout << e.what() << std::endl;
     }
-
     return 0;
 }

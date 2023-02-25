@@ -33,8 +33,7 @@ uint bring_to_human_view(uint val) {
         ((val & 0xFF000000) >> 24);
 }
 
-uint* sha1(char* message, uint msize_bytes)
-{
+uint* sha1(char* message, uint msize_bytes) {
 
     uint A = H[0];
     uint B = H[1];
@@ -120,7 +119,7 @@ uint* sha1(char* message, uint msize_bytes)
         C = C + c;
         D = D + d;
         E = E + e;
-
+    }
         uint* digest = new uint[5];
         digest[0] = A;
         digest[1] = B;
@@ -130,5 +129,4 @@ uint* sha1(char* message, uint msize_bytes)
 
         delete[] newMessage;
         return digest;
-    }
 }

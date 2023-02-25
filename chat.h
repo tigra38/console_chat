@@ -13,7 +13,6 @@ private:
 
 public:
     Chat() = default;
-    //Chat();
     virtual ~Chat() = default;
     Chat(Chat& _arr) = delete;
     Chat& operator=(Chat& _list) = delete;

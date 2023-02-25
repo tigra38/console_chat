@@ -1,18 +1,15 @@
 #include "chat.h"
-//#include "user.h"
 #include "message.h"
 #include "sha1.h"
 #include <string>
 #include <chrono>
 #include <ctime>
 #include <exception>
-#include <iomanip>
 
 using namespace std;
 using chrono::system_clock;
 
-class bad_login : public exception
-{
+class bad_login : public exception {
 public:
     const char* what() const noexcept override
     {
@@ -20,8 +17,7 @@ public:
     }
 };
 
-class bad_password : public exception
-{
+class bad_password : public exception {
 public:
     const char* what() const noexcept override
     {
@@ -29,13 +25,11 @@ public:
     }
 };
 
-template <typename T> void Chat<T>::setCurrentUser(std::string user)
-{
+template <typename T> void Chat<T>::setCurrentUser(std::string user) {
     currentUser = user;
 }
 
-template <typename T> void Chat<T>::getCurrentUser() const
-{
+template <typename T> void Chat<T>::getCurrentUser() const {
     if (!currentUser.empty()) {
         cout << currentUser->get_login() << endl;
     }
@@ -74,7 +68,6 @@ template <typename T> void Chat<T>::loginOperation() {
 
     it = _usr.find(login);
     if (it != _usr.end()) {
-        cout << "Found: " << it->first << " " << it->second << endl;
         success = true;
     }
 
@@ -83,14 +76,9 @@ template <typename T> void Chat<T>::loginOperation() {
         {
             cout << "Enter password:" << endl;
             cin >> password;
-            unsigned int* digest = sha1((char*)password.data(), sizeof(password) - 1);
-
-            if (!memcmp(it->second, digest, SHA1HASHLENGTHBYTES)) {
-                cout << "equal!!!" << endl;
-                delete[] digest;
+            if (!memcmp(it->second, sha1((char*)password.data(), sizeof(password) - 1), SHA1HASHLENGTHBYTES)) {
                 break;
             }
-            delete[] digest;
 
             if (try_num < 5) {
                 cout << "Incorrect Password! Try again (" << try_num + 1 << "/5)" << endl;
@@ -103,7 +91,6 @@ template <typename T> void Chat<T>::loginOperation() {
             this->setCurrentUser(it->first);
             cout << endl;
             this->userMenu();
-
     }
     else {
         cout << "No such user!" << endl;
@@ -115,8 +102,7 @@ template <typename T> void Chat<T>::logoutOperation() {
     system("cls");
 }
 
-template <typename T> void Chat<T>::addUser()
-{
+template <typename T> void Chat<T>::addUser() {
     T login, password;
     cout << "Register new user. Enter login:" << endl;
     cin >> login;
@@ -136,25 +122,15 @@ template <typename T> void Chat<T>::addUser()
     {
         cout << "Enter password:" << endl;
         cin >> password;
-        //_users.emplace_back(login, password);
         _usr.emplace(make_pair(login, sha1((char*)password.data(), sizeof(password) - 1)));
         cout << "User added." << endl;
-        /*for (map<string, unsigned int*>::iterator it = _usr.begin(); it != _usr.end(); ++it)
-        {
-            cout << (*it).first << " : " << (*it).second << endl;
-        }*/
-        
         unsigned int* digest = sha1((char*)password.data(), sizeof(password) - 1);
-        /*for (int i = 0; i < 5; i++) {
-            std::cout << std::hex << std::setw(8) << std::setfill('0') << digest[i] << "-";
-        }*/
         cout << endl;
         delete[] digest;
     }
 }
 
-template <typename T> int Chat<T>::showUsersByLogin()
-{
+template <typename T> int Chat<T>::showUsersByLogin() {
     cout << "Users list:" << endl;
     int num_users = 0;
     for (map<string, unsigned int*>::iterator it = _usr.begin(); it != _usr.end(); ++it)
@@ -169,8 +145,7 @@ template <typename T> int Chat<T>::showUsersByLogin()
     return num_users;
 }
 
-template <typename T> void Chat<T>::createMessage(bool toAll = false)
-{
+template <typename T> void Chat<T>::createMessage(bool toAll = false) {
     T from, to = "", text;
     system_clock::time_point value_t = system_clock::now();
     time_t timestamp = system_clock::to_time_t(value_t);
@@ -185,7 +160,6 @@ template <typename T> void Chat<T>::createMessage(bool toAll = false)
             if (to == currentUser) {
                 cout << "You can't send a message to yourself" << endl;
             }
-            //map<string, unsigned int*>::iterator it;
             else if (_usr.find(to) == _usr.end())
             {
                 cout << "No such user" << endl;
@@ -207,14 +181,12 @@ template <typename T> void Chat<T>::createMessage(bool toAll = false)
     }
 }
 
-template <typename T> void Chat<T>::showMessages(bool toAll = false)
-{
+template <typename T> void Chat<T>::showMessages(bool toAll = false) {
     cout << "New messages: " << endl;
     size_t message_num = 0;
     for (auto& text : _messages)
     {
         time_t x = text.getTime();
-        //auto y = ctime(&x);
         if (toAll)
         {
             if (text.getTo() == "all") {
@@ -237,8 +209,7 @@ template <typename T> void Chat<T>::showMessages(bool toAll = false)
         
 }
 
-template <typename T> void Chat<T>::showAllMessagesWith()
-{
+template <typename T> void Chat<T>::showAllMessagesWith() {
 
     T with;
     size_t message_num = 0;
@@ -254,7 +225,6 @@ template <typename T> void Chat<T>::showAllMessagesWith()
             for (auto& text : _messages)
             {
                 time_t x = text.getTime();
-                //auto y = ctime(&x);
                 if (with == text.getTo() && currentUser == text.getFrom())
                 {
                     cout << text.getFrom() << " >>> " << text.getTo() << ": " << text.getText()
@@ -273,8 +243,7 @@ template <typename T> void Chat<T>::showAllMessagesWith()
     }
 }
 
-template <typename T> void Chat<T>::sentMessages()
-{
+template <typename T> void Chat<T>::sentMessages() {
     int num_messages = 0;
     for (auto& text : _messages) {
         if (currentUser == text.getFrom())
@@ -289,8 +258,7 @@ template <typename T> void Chat<T>::sentMessages()
     if (!num_messages) cout << "No sent messages" << endl;
 }
 
-template <typename T> void Chat<T>::userMenu()
-{
+template <typename T> void Chat<T>::userMenu() {
     while (!currentUser.empty())
     {
         char user_choice;
@@ -332,8 +300,7 @@ template <typename T> void Chat<T>::userMenu()
     cout << endl;
 }
 
-template <typename T> void Chat<T>::runChat()
-{
+template <typename T> void Chat<T>::runChat() {
     bool chat_enable = true;
     while (chat_enable)
     {
