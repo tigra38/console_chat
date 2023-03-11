@@ -1,5 +1,4 @@
 ﻿#include <iostream>
-#include "user.h"
 #include "chat.h"
 #include "chat.cpp"
 
