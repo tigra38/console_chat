@@ -1,5 +1,6 @@
 #pragma once
 #include "message.h"
+//#include "sha1.h"
 #include <vector>
 #include <map>
 
@@ -22,12 +23,9 @@ public:
     void logoutOperation();
     int showUsersByLogin() const;
     void setCurrentUser(const std::string& user);
-    void getCurrentUser() const;
-    
-    void createMessage(bool toAll);
-    void showMessages(bool toAll) const;
+    void createMessage(bool toAll = false);
+    void showMessages(bool toAll = false) const;
     void showAllMessagesWith() const;
     void sentMessages();
-    bool pwdVerify(const std::string& password) const;
     const std::string get_login() { return currentUser; }
 };

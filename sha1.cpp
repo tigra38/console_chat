@@ -1,5 +1,6 @@
 #include <iomanip>
 #include <iostream>
+#include <cstring>
 #include "sha1.h"
 
 #define one_block_size_bytes 64

@@ -1,7 +1,7 @@
 #include "chat.h"
-#include "message.h"
 #include "sha1.h"
 #include <string>
+#include <cstring>
 #include <chrono>
 #include <ctime>
 #include <exception>
@@ -28,25 +28,6 @@ public:
 template <typename T> void Chat<T>::setCurrentUser(const std::string& user) {
     currentUser = user;
 }
-
-template <typename T> void Chat<T>::getCurrentUser() const {
-    if (!currentUser.empty()) {
-        cout << currentUser->get_login() << endl;
-    }
-    else cout << "Nobody logged in" << endl;
-}
-
-template <typename T> bool Chat<T>::pwdVerify(const std::string& password) const {
-    unsigned int* digest = sha1((char* )password.data(), password.size());
-
-    bool cmpHashes = !memcmp(
-        data[i].pass_sha1_hash,
-        digest,
-        SHA1HASHLENGTHBYTES);
-    delete[] digest;
-    return cmpHashes;
-}
-
 
 template <typename T> void Chat<T>::loginOperation() {
     T login, password;
@@ -145,7 +126,7 @@ template <typename T> int Chat<T>::showUsersByLogin() const{
     return num_users;
 }
 
-template <typename T> void Chat<T>::createMessage(bool toAll = false) {
+template <typename T> void Chat<T>::createMessage(bool toAll) {
     T from, to = "", text;
     system_clock::time_point value_t = system_clock::now();
     time_t timestamp = system_clock::to_time_t(value_t);
@@ -181,7 +162,7 @@ template <typename T> void Chat<T>::createMessage(bool toAll = false) {
     }
 }
 
-template <typename T> void Chat<T>::showMessages(bool toAll = false) const {
+template <typename T> void Chat<T>::showMessages(bool toAll) const {
     cout << "New messages: " << endl;
     size_t message_num = 0;
     for (auto& text : _messages)
