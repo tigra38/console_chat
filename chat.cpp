@@ -25,7 +25,7 @@ public:
     }
 };
 
-template <typename T> void Chat<T>::setCurrentUser(std::string user) {
+template <typename T> void Chat<T>::setCurrentUser(const std::string& user) {
     currentUser = user;
 }
 
@@ -130,13 +130,13 @@ template <typename T> void Chat<T>::addUser() {
     }
 }
 
-template <typename T> int Chat<T>::showUsersByLogin() {
+template <typename T> int Chat<T>::showUsersByLogin() const{
     cout << "Users list:" << endl;
     int num_users = 0;
-    for (map<string, unsigned int*>::iterator it = _usr.begin(); it != _usr.end(); ++it)
+    for (const auto& it : _usr)
     {
-        if (it != _usr.find(currentUser)) {
-            cout << (*it).first << endl;
+        if (it.first != currentUser) {
+            cout << it.first << endl;
             num_users++;
         }
     }
@@ -181,7 +181,7 @@ template <typename T> void Chat<T>::createMessage(bool toAll = false) {
     }
 }
 
-template <typename T> void Chat<T>::showMessages(bool toAll = false) {
+template <typename T> void Chat<T>::showMessages(bool toAll = false) const {
     cout << "New messages: " << endl;
     size_t message_num = 0;
     for (auto& text : _messages)
@@ -209,7 +209,7 @@ template <typename T> void Chat<T>::showMessages(bool toAll = false) {
         
 }
 
-template <typename T> void Chat<T>::showAllMessagesWith() {
+template <typename T> void Chat<T>::showAllMessagesWith() const {
 
     T with;
     size_t message_num = 0;
@@ -258,7 +258,7 @@ template <typename T> void Chat<T>::sentMessages() {
     if (!num_messages) cout << "No sent messages" << endl;
 }
 
-template <typename T> void Chat<T>::userMenu() {
+template <typename T> void Chat<T>::userMenu(){
     while (!currentUser.empty())
     {
         char user_choice;

@@ -2,8 +2,6 @@
 #include <iostream>
 #include "sha1.h"
 
-typedef unsigned int uint;
-
 #define one_block_size_bytes 64
 #define one_block_size_uints 16
 #define block_expend_size_uints 80

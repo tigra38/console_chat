@@ -15,7 +15,7 @@ private:
 
 public:
     ~Message() = default;
-    Message(const std::string& from, const std::string& to, const std::string& text, std::time_t timestamp) 
+    Message(const std::string& from, const std::string& to, const std::string& text, std::time_t& timestamp) 
         : _from(from), _to(to), _text(text), _timestamp(timestamp) {}
 
     const std::string getFrom() const { return _from; }
