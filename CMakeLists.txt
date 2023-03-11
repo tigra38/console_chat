@@ -11,14 +11,12 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Core REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core REQUIRED)
 
 add_executable(Chat
   main.cpp
-  User.h
+  Sha1.cpp
+  Sha1.h
   Message.h
   Chat.h
   Chat.cpp
 )
-target_link_libraries(Chat Qt${QT_VERSION_MAJOR}::Core)
